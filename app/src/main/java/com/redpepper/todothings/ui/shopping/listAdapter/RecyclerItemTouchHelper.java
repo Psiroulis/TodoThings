@@ -2,7 +2,6 @@ package com.redpepper.todothings.ui.shopping.listAdapter;
 
 import android.graphics.Canvas;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,18 +27,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         if(viewHolder != null){
             final View foregroundView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).viewForeground;
 
-
             getDefaultUIUtil().onSelected(foregroundView);
         }
     }
 
     @Override
     public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-        final View foregroundView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).viewBackground;
-
-        TextView textView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).categoryName;
+        final View foregroundView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).viewForeground;
 
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
@@ -49,21 +44,17 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        super.clearView(recyclerView, viewHolder);
 
         final View foregroundView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).viewForeground;
-
-        TextView textView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).categoryName;
 
         getDefaultUIUtil().clearView(foregroundView);
     }
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
         final View foregroundView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).viewForeground;
-        TextView textView = ((CategoryRecyclerViewAdapter.ViewHolder) viewHolder).categoryName;
+
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
 
