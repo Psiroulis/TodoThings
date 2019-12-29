@@ -19,7 +19,7 @@ public class ShoppingCategoryModule {
     }
 
     @Provides
-    public ShoppingCategoryMVPRepository provideRepository(){
-        return new ShoppingCategoryRepository();
+    public ShoppingCategoryMVPRepository provideRepository(FirebaseDatabase firebaseDatabase){
+        return new FirebaseRepository(firebaseDatabase);
     }
 }

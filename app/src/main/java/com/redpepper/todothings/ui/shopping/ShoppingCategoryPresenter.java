@@ -1,34 +1,28 @@
 package com.redpepper.todothings.ui.shopping;
 
-import androidx.annotation.NonNull;
+import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.redpepper.todothings.DataModels.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
 
     ShoppingCategoryMVP.Model model;
     ShoppingCategoryMVP.View view;
-    FirebaseDatabase firebaseDatabase;
 
-    FirebaseUser user;
-    DatabaseReference databaseReference;
+    CompositeDisposable subscription;
 
-    public ShoppingCategoryPresenter(FirebaseDatabase firebaseDatabase,ShoppingCategoryMVP.Model model) {
-        this.firebaseDatabase = firebaseDatabase;
+    public ShoppingCategoryPresenter(FirebaseDatabase firebaseDatabase, ShoppingCategoryMVP.Model model) {
+
         this.model = model;
 
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
-        this.databaseReference  = this.firebaseDatabase.getReference("categories").child("shopping").child(user.getUid());
+        this.subscription = new CompositeDisposable();
     }
 
     @Override
@@ -39,13 +33,14 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
     @Override
     public void createNewCategory(String name) {
 
-        String id = databaseReference.push().getKey();
+        subscription.add(model.storeNewCategory(name)
+                .subscribe(category -> {
+                            view.addItemToListView(category);
+                        }, throwable -> {
+                            Log.e("RxFirebaseSample", throwable.toString());
+                        }
 
-        Category category = new Category(id,name.toUpperCase());
-
-        databaseReference.child(id).setValue(category);
-
-        view.addItemToListView(category);
+                ));
     }
 
     @Override
@@ -53,48 +48,68 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
 
         List<Category> categoryList = new ArrayList<>();
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        subscription.add(model.getAllCategories()
+                .subscribe(categories -> {
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (Category category : categories) {
+                        categoryList.add(category);
+                    }
 
-                for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()){
+                    view.fillListView(categoryList);
 
-                    Category category = categorySnapshot.getValue(Category.class);
-
-                    categoryList.add(category);
-                }
-
-                view.fillListView(categoryList);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                }, throwable -> {
+                    Log.e("RxFirebaseSample", throwable.toString());
+                }));
 
     }
 
     @Override
     public void updateCategory(String id, int position, String name) {
 
-        Category category = new Category(id,name.toUpperCase());
+        subscription.add(model.editCategory(id, name)
+                .subscribe(newCategory -> {
+                            view.editItem(newCategory, position);
 
-        databaseReference.child(id).setValue(category);
+                        }, throwable -> {
 
-        view.editItem(category, position);
+                            Log.e("RxFirebaseSample", throwable.toString());
+
+                        }
+
+                ));
     }
 
     @Override
     public void deleteCategory(String id) {
-        databaseReference.child(id).removeValue();
+
+        subscription.add(model.deleteCategory(id)
+                .subscribe(category -> {
+                            Log.d("RxFirebaseSample", "category: " + category);
+                        }, throwable -> {
+                            Log.e("RxFirebaseSample", throwable.toString());
+                        }
+                ));
     }
 
     @Override
     public void restoreCategory(Category category) {
-        databaseReference.child(category.getId()).setValue(category);
+
+        subscription.add(model.restoreCategory(category)
+        .subscribe(category1 -> {
+                    Log.d("RxFirebaseSample", "category: " + category);
+        },throwable -> {
+            Log.e("RxFirebaseSample", throwable.toString());
+                }
+        ));
+    }
+
+    @Override
+    public void rxUnsubscribe() {
+        if (subscription != null) {
+            if (!subscription.isDisposed()) {
+                subscription.dispose();
+            }
+        }
     }
 }
 

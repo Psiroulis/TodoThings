@@ -79,14 +79,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         FloatingActionButton fab = root.findViewById(R.id.categoryListfab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                showAlertDialog(CREATE_CATEGORY,null,0);
-
-            }
-        });
+        fab.setOnClickListener(view -> showAlertDialog(CREATE_CATEGORY,null,0));
 
         return root;
     }
@@ -110,6 +103,8 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
     @Override
     public void onDetach() {
         super.onDetach();
+
+        presenter.rxUnsubscribe();
 
     }
 
@@ -166,30 +161,19 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
             Snackbar snackbar = Snackbar
                     .make(getActivity().findViewById(android.R.id.content), name + " removed from cart!", Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            snackbar.setAction("UNDO",view -> {
 
-                    mAdapter.restoreItem(deletedItem, deletedIndex);
+                mAdapter.restoreItem(deletedItem, deletedIndex);
 
-                    presenter.restoreCategory(deletedItem);
-                }
+                presenter.restoreCategory(deletedItem);
+
             });
-
-//            snackbar.addCallback(new Snackbar.Callback(){
-//                @Override
-//                public void onDismissed(Snackbar transientBottomBar, int event) {
-//
-//
-//
-//                }
-//            });
 
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
 
-
         }
+
     }
 
 
@@ -222,35 +206,26 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         titleTxt.setText("Add New Category");
 
+        cancelBtn.setOnClickListener(view -> alertDialog.dismiss());
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
+       submitBtn.setOnClickListener(view -> {
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+           if(type == CREATE_CATEGORY){
 
-                if(type == CREATE_CATEGORY){
+               presenter.createNewCategory(nameEdt.getText().toString());
 
-                    presenter.createNewCategory(nameEdt.getText().toString());
+           }else if(type == EDIT_CATEGORY){
 
-                }else if(type == EDIT_CATEGORY){
+               presenter.updateCategory(id,position,nameEdt.getText().toString());
 
-                    presenter.updateCategory(id,position,nameEdt.getText().toString());
+           }
 
-                }
+           alertDialog.dismiss();
 
-                alertDialog.dismiss();
+       });
 
-            }
-        });
-
-        alertDialog.setView(dialogView);
-        alertDialog.show();
+       alertDialog.setView(dialogView);
+       alertDialog.show();
     }
 
 
