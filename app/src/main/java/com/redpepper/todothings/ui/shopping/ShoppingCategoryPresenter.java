@@ -44,6 +44,8 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
         Category category = new Category(id,name.toUpperCase());
 
         databaseReference.child(id).setValue(category);
+
+        view.addItemToListView(category);
     }
 
     @Override
@@ -51,11 +53,10 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
 
         List<Category> categoryList = new ArrayList<>();
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                categoryList.clear();
 
                 for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()){
 
@@ -64,7 +65,7 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
                     categoryList.add(category);
                 }
 
-                view.updateListView(categoryList);
+                view.fillListView(categoryList);
 
             }
 
@@ -73,11 +74,27 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
 
             }
         });
+
+    }
+
+    @Override
+    public void updateCategory(String id, int position, String name) {
+
+        Category category = new Category(id,name.toUpperCase());
+
+        databaseReference.child(id).setValue(category);
+
+        view.editItem(category, position);
     }
 
     @Override
     public void deleteCategory(String id) {
         databaseReference.child(id).removeValue();
+    }
+
+    @Override
+    public void restoreCategory(Category category) {
+        databaseReference.child(category.getId()).setValue(category);
     }
 }
 

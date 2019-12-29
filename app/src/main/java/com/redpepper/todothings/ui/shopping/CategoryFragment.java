@@ -1,10 +1,11 @@
 package com.redpepper.todothings.ui.shopping;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Canvas;
+
+import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -12,14 +13,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,30 +40,23 @@ import butterknife.ButterKnife;
 
 public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.View, CategoryRecyclerViewAdapter.RecyclerViewClickListener,RecyclerItemTouchHelper.RecyclerItemTouchHelperListener{
 
-    @BindView(R.id.dialogLayout)
-    ConstraintLayout dialogLayout;
-
-    @BindView(R.id.blackWindow)
-    RelativeLayout black;
-
-    @BindView(R.id.addCategoryDialogNameEdt)
-    EditText nameDilogEdt;
-
-    @BindView(R.id.addcategorycancelbtn)
-    Button cancelDialogBtn;
-
-    @BindView(R.id.addCategorySubmitBtn)
-    Button submitDialogBtn;
-
     @BindView(R.id.categoryList)
     RecyclerView listView;
 
     @Inject
     ShoppingCategoryMVP.Presenter presenter;
 
+    @Inject
+    Context context;
+
     CategoryRecyclerViewAdapter mAdapter;
 
     List<Category> categoryList;
+
+    private static final int CREATE_CATEGORY = 1;
+
+    private static final int EDIT_CATEGORY = 2;
+
 
     public CategoryFragment() {}
 
@@ -84,39 +77,13 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         ButterKnife.bind(this,root);
 
-        cancelDialogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                black.setVisibility(View.GONE);
-                dialogLayout.setVisibility(View.GONE);
-                nameDilogEdt.setText("");
-
-            }
-        });
-
-        submitDialogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                presenter.createNewCategory(nameDilogEdt.getText().toString());
-
-                black.setVisibility(View.GONE);
-                dialogLayout.setVisibility(View.GONE);
-                nameDilogEdt.setText("");
-
-
-
-            }
-        });
-
         FloatingActionButton fab = root.findViewById(R.id.categoryListfab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                black.setVisibility(View.VISIBLE);
-                dialogLayout.setVisibility(View.VISIBLE);
+                showAlertDialog(CREATE_CATEGORY,null,0);
 
             }
         });
@@ -146,9 +113,8 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
     }
 
-
     @Override
-    public void updateListView(List<Category> itemList) {
+    public void fillListView(List<Category> itemList) {
 
         categoryList = itemList;
 
@@ -160,54 +126,142 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         listView.setItemAnimator(new DefaultItemAnimator());
 
-        listView.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
+        listView.addItemDecoration(new DividerItemDecoration(context,LinearLayoutManager.VERTICAL));
 
         listView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback itemtouchhelpercallback = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
 
         new ItemTouchHelper((itemtouchhelpercallback)).attachToRecyclerView(listView);
+    }
+
+    @Override
+    public void addItemToListView(Category category) {
+        categoryList.add(category);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void editItem(Category category, int position) {
+
+        categoryList.set(position,category);
 
         mAdapter.notifyDataSetChanged();
 
     }
 
     @Override
-    public void recyclerViewListClicked(View v, int position) {
-
-        presenter.deleteCategory(categoryList.get(position).getId());
-    }
-
-    @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if(viewHolder instanceof CategoryRecyclerViewAdapter.ViewHolder){
 
-            // get the removed item name to display it in snack bar
             String name = categoryList.get(viewHolder.getAdapterPosition()).getName();
 
-            // backup of removed item for undo purpose
             final Category deletedItem = categoryList.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
-            // remove the item from recycler view
+            presenter.deleteCategory(categoryList.get(position).getId());
+
             mAdapter.deleteItem(viewHolder.getAdapterPosition());
 
-            // showing snack bar with Undo option
-//            Snackbar snackbar = Snackbar
-//                    .make(, name + " removed from cart!", Snackbar.LENGTH_LONG);
-//            snackbar.setAction("UNDO", new View.OnClickListener() {
+            Snackbar snackbar = Snackbar
+                    .make(getActivity().findViewById(android.R.id.content), name + " removed from cart!", Snackbar.LENGTH_LONG);
+
+            snackbar.setAction("UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mAdapter.restoreItem(deletedItem, deletedIndex);
+
+                    presenter.restoreCategory(deletedItem);
+                }
+            });
+
+//            snackbar.addCallback(new Snackbar.Callback(){
 //                @Override
-//                public void onClick(View view) {
+//                public void onDismissed(Snackbar transientBottomBar, int event) {
 //
-//                    // undo is selected, restore the deleted item
-//                    mAdapter.restoreItem(deletedItem, deletedIndex);
+//
+//
 //                }
 //            });
-//            snackbar.setActionTextColor(Color.YELLOW);
-//            snackbar.show();
+
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
 
 
         }
+    }
+
+
+    private void showAlertDialog(int type, String id, int position){
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View dialogView = inflater.inflate(R.layout.add_category_dialog_layout,null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+
+        TextView titleTxt = dialogView.findViewById(R.id.addCategoryDialogTitleTxt);
+
+        EditText nameEdt = dialogView.findViewById(R.id.addCategoryDialogNameEdt);
+
+        Button cancelBtn = dialogView.findViewById(R.id.addcategorycancelbtn);
+
+        Button submitBtn = dialogView.findViewById(R.id.addCategorySubmitBtn);
+
+
+        if(type == CREATE_CATEGORY){
+
+            titleTxt.setText("Add New Category");
+
+        }else if(type == EDIT_CATEGORY){
+
+            titleTxt.setText("Edit ACategory");
+
+        }
+
+        titleTxt.setText("Add New Category");
+
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(type == CREATE_CATEGORY){
+
+                    presenter.createNewCategory(nameEdt.getText().toString());
+
+                }else if(type == EDIT_CATEGORY){
+
+                    presenter.updateCategory(id,position,nameEdt.getText().toString());
+
+                }
+
+                alertDialog.dismiss();
+
+            }
+        });
+
+        alertDialog.setView(dialogView);
+        alertDialog.show();
+    }
+
+
+    //Adapter Interface Methods
+    @Override
+    public void recyclerViewListClicked(View v, int position) { }
+
+    @Override
+    public void recyclerViewItemEditClicked(String id, int position) {
+
+        showAlertDialog(EDIT_CATEGORY,id,position);
     }
 
     //    public interface OnListFragmentInteractionListener {

@@ -9,7 +9,9 @@ public interface ShoppingCategoryMVP {
     interface Model {}
     interface View {
 
-        void updateListView(List<Category> itemList);
+        void fillListView(List<Category> itemList);
+        void addItemToListView(Category category);
+        void editItem(Category category, int position);
 
     }
     interface Presenter {
@@ -21,6 +23,10 @@ public interface ShoppingCategoryMVP {
         void downLoadCategories();
 
         void deleteCategory(String id);
+
+        void updateCategory(String id, int position, String name);
+
+        void restoreCategory(Category category);
     }
 
 }

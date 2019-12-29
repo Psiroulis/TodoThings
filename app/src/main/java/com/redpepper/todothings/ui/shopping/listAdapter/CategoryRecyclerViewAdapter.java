@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.redpepper.todothings.DataModels.Category;
 import com.redpepper.todothings.R;
+
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         public TextView categoryId;
         public TextView categoryName;
         public RelativeLayout viewBackground, viewForeground;
+        public ImageButton editBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -33,6 +37,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             categoryName = itemView.findViewById(R.id.categoryItemName);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
+            editBtn = itemView.findViewById(R.id.categoryItemEditButton);
 
             itemView.setOnClickListener(this);
         }
@@ -67,7 +72,12 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 
         holder.categoryId.setText(category.getId());
         holder.categoryName.setText(category.getName());
-
+        holder.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemListener.recyclerViewItemEditClicked(category.getId(), position);
+            }
+        });
 
     }
 
@@ -78,11 +88,17 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 
     public interface RecyclerViewClickListener{
         void recyclerViewListClicked(View v, int position);
+        void recyclerViewItemEditClicked(String id, int position);
     }
 
     public void deleteItem(int posotion){
         categoryList.remove(posotion);
         notifyItemRemoved(posotion);
+    }
+
+    public void restoreItem(Category deletedCategory, int deletedIndex){
+        categoryList.add(deletedIndex,deletedCategory);
+        notifyItemInserted(deletedIndex);
     }
 
     public Context getContext(){

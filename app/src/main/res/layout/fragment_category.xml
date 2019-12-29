@@ -11,12 +11,25 @@
         android:layout_height="match_parent"
         android:background="#FF0000">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DELETE"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/trashimage"
+            android:layout_marginRight="20dip"/>
+
         <ImageView
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:src="@drawable/ic_menu_gallery"
+            android:id="@+id/trashimage"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:src="@drawable/ic_trash"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"/>
 
     </RelativeLayout>
 
@@ -46,6 +59,15 @@
             android:text="TextView"
             android:visibility="gone" />
 
+        <ImageButton
+            android:id="@+id/categoryItemEditButton"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:src="@drawable/ic_pencil_edit_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="#00000000"/>
     </RelativeLayout>
 
 

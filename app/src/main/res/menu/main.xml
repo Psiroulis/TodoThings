@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_signOut"
         android:orderInCategory="200"
-        android:title="Signout Out"
+        android:title="Sign Out"
         app:showAsAction="never"/>
 
 </menu>
