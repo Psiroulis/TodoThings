@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/view_background_shit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FF0000">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DELETE"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/trashimage"
+            android:layout_marginRight="20dip"/>
+
+        <ImageView
+            android:id="@+id/trashimage"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:src="@drawable/ic_trash"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_foreground_shit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:id="@+id/shoppingItemDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/shoppingItemAmount"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="10dip"
+            android:text="Makaronia misko"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/shoppingItemId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="TextView"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/shoppingItemAmount"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="40dp"
+            android:text="1"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:layout_toLeftOf="@id/shoppingItemEditButton"
+            android:background="#383838"
+            android:padding="5dp"
+            android:textAlignment="center"/>
+
+        <ImageButton
+            android:id="@+id/shoppingItemEditButton"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:src="@drawable/ic_pencil_edit_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="#00000000"/>
+    </RelativeLayout>
+
+
+</FrameLayout>

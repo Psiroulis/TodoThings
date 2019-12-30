@@ -5,6 +5,7 @@ import android.app.Application;
 import com.redpepper.todothings.login.LoginUserModule;
 import com.redpepper.todothings.register.RegisterUserModule;
 import com.redpepper.todothings.ui.shopping.ShoppingCategoryModule;
+import com.redpepper.todothings.ui.shopping_Item.ShoppingItemsModule;
 
 public class App extends Application {
 
@@ -19,6 +20,7 @@ public class App extends Application {
                 .registerUserModule(new RegisterUserModule())
                 .loginUserModule(new LoginUserModule())
                 .shoppingCategoryModule(new ShoppingCategoryModule())
+                .shoppingItemsModule(new ShoppingItemsModule())
                 .build();
 
         component.inject(this);

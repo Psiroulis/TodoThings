@@ -14,10 +14,25 @@
             android:id="@+id/goToShoppingCategory"
             app:destination="@id/nav_shopping" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_shopping"
         android:name="com.redpepper.todothings.ui.shopping.CategoryFragment"
         android:label="Shopping"
-        tools:layout="@layout/fragment_category_list" />
+        tools:layout="@layout/fragment_category_list" >
+        <action
+            android:id="@+id/goToCategoryItems"
+            app:destination="@id/nav_shoppingItems" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_shoppingItems"
+        android:name="com.redpepper.todothings.ui.shopping_Item.ShoppingItemsFragment"
+        android:label="fragment_shopping_items"
+        tools:layout="@layout/fragment_shopping_items" >
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

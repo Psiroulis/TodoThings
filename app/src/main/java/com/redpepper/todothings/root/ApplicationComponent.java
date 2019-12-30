@@ -8,6 +8,8 @@ import com.redpepper.todothings.register.RegisterUserActivity;
 import com.redpepper.todothings.register.RegisterUserModule;
 import com.redpepper.todothings.ui.shopping.CategoryFragment;
 import com.redpepper.todothings.ui.shopping.ShoppingCategoryModule;
+import com.redpepper.todothings.ui.shopping_Item.ShoppingItemsFragment;
+import com.redpepper.todothings.ui.shopping_Item.ShoppingItemsModule;
 
 import javax.inject.Singleton;
 
@@ -18,7 +20,8 @@ import dagger.Component;
         ApplicationModule.class,
         RegisterUserModule.class,
         LoginUserModule.class,
-        ShoppingCategoryModule.class
+        ShoppingCategoryModule.class,
+        ShoppingItemsModule.class
 })
 
 public interface ApplicationComponent {
@@ -30,4 +33,6 @@ public interface ApplicationComponent {
     void inject (LoginUserActivity target);
 
     void inject (CategoryFragment target);
+
+    void inject (ShoppingItemsFragment target);
 }

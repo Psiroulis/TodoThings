@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -66,8 +68,6 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         presenter.setView(this);
 
-        presenter.downLoadCategories();
-
     }
 
     @Override
@@ -91,6 +91,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         ((App) context.getApplicationContext()).getComponent().inject(this);
 
+//        presenter.downLoadCategories();
 
 //        if (context instanceof OnListFragmentInteractionListener) {
 //            mListener = (OnListFragmentInteractionListener) context;
@@ -231,7 +232,17 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
     //Adapter Interface Methods
     @Override
-    public void recyclerViewListClicked(View v, int position) { }
+    public void recyclerViewListClicked(View v, int position) {
+
+        Category category = categoryList.get(position);
+
+//        NavDirections action = HomeFragmentDirections.goToShoppingCategory();
+//        Navigation.findNavController(view).navigate(action);
+
+       NavDirections action = CategoryFragmentDirections.goToCategoryItems(category.getId());
+        Navigation.findNavController(v).navigate(action);
+
+    }
 
     @Override
     public void recyclerViewItemEditClicked(String id, int position) {
@@ -241,4 +252,11 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
     //    public interface OnListFragmentInteractionListener {
 //    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.downLoadCategories();
+    }
 }
