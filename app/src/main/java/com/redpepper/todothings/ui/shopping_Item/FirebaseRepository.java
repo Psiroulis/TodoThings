@@ -29,8 +29,6 @@ class FirebaseRepository implements ShoppingItemsMVPRepository {
 
     }
 
-    //test
-
     @Override
     public Maybe<Item> createItem(String categoryId, String description, int amount) {
 
