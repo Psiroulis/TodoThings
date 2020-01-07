@@ -10,14 +10,12 @@ interface ShoppingItemsMVPRepository {
 
     Maybe<List<Item>> getAllCategoryItems(String categoryid);
 
-    Maybe<Item> createItem(String categoryId, String description, int amount);
+    Maybe<Item> createItem(String categoryId, Item item);
 
-    Maybe<Item> updateItem(String categoryId, String id, String description, int amount);
+    Maybe<Item> updateItem(String categoryId, Item item);
 
-    Maybe<Item> deleteCategory(String categoryId, String itemId);
+    Maybe<Item> deleteItem(String categoryId, Item item);
 
-    Maybe<Item> restoreCategory(String categoryId, Item item);
-
-
+    Maybe<Item> restoreItem(String categoryId, Item item);
 
 }

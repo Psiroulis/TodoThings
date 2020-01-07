@@ -25,7 +25,7 @@ class FirebaseRepository implements ShoppingCategoryMVPRepository {
 
         this.firebaseDatabase = firebaseDatabase;
 
-        this.databaseReference  = this.firebaseDatabase.getReference("categories").child("shopping").child(user.getUid());
+        this.databaseReference  = this.firebaseDatabase.getReference("lists").child(user.getUid()).child("categories");
     }
 
     @Override

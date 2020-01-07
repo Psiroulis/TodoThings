@@ -33,6 +33,7 @@ import com.redpepper.todothings.root.App;
 import com.redpepper.todothings.ui.shopping.listAdapter.CategoryRecyclerViewAdapter;
 import com.redpepper.todothings.ui.shopping.listAdapter.RecyclerItemTouchHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,8 +67,6 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter.setView(this);
-
     }
 
     @Override
@@ -79,7 +78,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         FloatingActionButton fab = root.findViewById(R.id.categoryListfab);
 
-        fab.setOnClickListener(view -> showAlertDialog(CREATE_CATEGORY,null,0));
+        fab.setOnClickListener(view -> showAlertDialog(CREATE_CATEGORY,null,-1));
 
         return root;
     }
@@ -112,23 +111,9 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
     @Override
     public void fillListView(List<Category> itemList) {
 
-        categoryList = itemList;
-
-        mAdapter = new CategoryRecyclerViewAdapter(categoryList,this);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
-        listView.setLayoutManager(layoutManager);
-
-        listView.setItemAnimator(new DefaultItemAnimator());
-
-        listView.addItemDecoration(new DividerItemDecoration(context,LinearLayoutManager.VERTICAL));
-
-        listView.setAdapter(mAdapter);
-
-        ItemTouchHelper.SimpleCallback itemtouchhelpercallback = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
-
-        new ItemTouchHelper((itemtouchhelpercallback)).attachToRecyclerView(listView);
+       categoryList.clear();
+       categoryList.addAll(itemList);
+       this.mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -205,11 +190,9 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         }
 
-        titleTxt.setText("Add New Category");
-
         cancelBtn.setOnClickListener(view -> alertDialog.dismiss());
 
-       submitBtn.setOnClickListener(view -> {
+        submitBtn.setOnClickListener(view -> {
 
            if(type == CREATE_CATEGORY){
 
@@ -257,6 +240,27 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
     @Override
     public void onResume() {
         super.onResume();
+
+        presenter.setView(this);
+
+        categoryList = new ArrayList<>();
+
+        mAdapter = new CategoryRecyclerViewAdapter(categoryList,this);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        listView.setLayoutManager(layoutManager);
+
+        listView.setItemAnimator(new DefaultItemAnimator());
+
+        listView.addItemDecoration(new DividerItemDecoration(context,LinearLayoutManager.VERTICAL));
+
+        listView.setAdapter(mAdapter);
+
+        ItemTouchHelper.SimpleCallback itemtouchhelpercallback = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+
+        new ItemTouchHelper((itemtouchhelpercallback)).attachToRecyclerView(listView);
+
         presenter.downLoadCategories();
     }
 }

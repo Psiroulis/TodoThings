@@ -3,11 +3,11 @@ package com.redpepper.todothings.ui.shopping.listAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +45,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         @Override
         public void onClick(View v) {
 
-            Log.d("blepo", "click is called");
             itemListener.recyclerViewListClicked(itemView,this.getLayoutPosition());
 
         }

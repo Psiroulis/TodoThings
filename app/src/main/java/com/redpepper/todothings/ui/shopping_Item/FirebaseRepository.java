@@ -25,16 +25,16 @@ class FirebaseRepository implements ShoppingItemsMVPRepository {
 
         this.firebaseDatabase = firebaseDatabase;
 
-        this.databaseReference  = this.firebaseDatabase.getReference("categories").child("shopping").child(user.getUid());
+        this.databaseReference  = this.firebaseDatabase.getReference("lists").child(user.getUid()).child("items");
 
     }
 
     @Override
-    public Maybe<Item> createItem(String categoryId, String description, int amount) {
+    public Maybe<Item> createItem(String categoryId, Item item) {
 
         String id = databaseReference.child(categoryId).push().getKey();
 
-        Item item = new Item(id, description,amount);
+        item.setId(id);
 
         databaseReference.child(categoryId).child(id).setValue(item);
 
@@ -43,25 +43,24 @@ class FirebaseRepository implements ShoppingItemsMVPRepository {
     }
 
     @Override
-    public Maybe<Item> updateItem(String categoryId, String id, String description, int amount) {
+    public Maybe<Item> updateItem(String categoryId, Item item) {
 
-        Item item = new Item(id,description,amount);
+        databaseReference.child(categoryId).child(item.getId()).setValue(item);
 
-        databaseReference.child(categoryId).child(id).setValue(item);
-
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(id), Item.class);
+        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(categoryId).child(item.getId()), Item.class);
     }
 
     @Override
-    public Maybe<Item> deleteCategory(String categoryId, String itemId) {
+    public Maybe<Item> deleteItem(String categoryId, Item item) {
 
-        databaseReference.child(categoryId).child(itemId).removeValue();
+        databaseReference.child(categoryId).child(item.getId()).removeValue();
 
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(categoryId).child(itemId), Item.class);
+
+        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(categoryId).child(item.getId()), Item.class);
     }
 
     @Override
-    public Maybe<Item> restoreCategory(String categoryId, Item item) {
+    public Maybe<Item> restoreItem(String categoryId, Item item) {
 
         databaseReference.child(categoryId).child(item.getId()).setValue(item);
 
@@ -71,7 +70,8 @@ class FirebaseRepository implements ShoppingItemsMVPRepository {
     @Override
     public Maybe<List<Item>> getAllCategoryItems(String categoryid) {
         return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(categoryid), DataSnapshotMapper.listOf(Item.class));
-    }
 
+
+    }
 
 }

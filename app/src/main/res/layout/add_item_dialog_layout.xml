@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="#2196F3"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/add_item_dialog_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Item"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/add_item_dialog_description_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Description.."
+        android:inputType="textPersonName"
+        android:textColor="#222"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <LinearLayout
+        android:id="@+id/add_itemDialog_counter_Layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_item_dialog_description_edittext">
+
+        <Button
+            android:id="@+id/add_item_dialog_counter_minus_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/add_item_dialog_counter_textview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#fff"
+            android:text="10"
+            android:textAlignment="center"
+            android:textColor="#000"/>
+
+        <Button
+            android:id="@+id/add_item_dialog_counter_plus_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:text="+"
+            android:textAlignment="center"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/add_itemDialog_counter_Layout"
+        tools:layout_editor_absoluteX="1dp">
+
+        <Button
+            android:id="@+id/add_itemDialog_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="cancel"
+            android:background="#11E91E63"
+            android:textColor="#FF0000"
+            android:layout_marginRight="2dp"/>
+
+        <Button
+            android:id="@+id/add_itemDialog_submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            android:background="#1B4CAF50"
+            android:textColor="#4CAF50"
+            android:layout_marginLeft="2dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dip"/>
 
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -39,18 +40,36 @@
         android:layout_height="match_parent"
         android:background="#FFFFFF">
 
+        <CheckBox
+            android:id="@+id/doneBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dip"/>
+
+        <RelativeLayout
+            android:id="@+id/shpverticalDivider"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="#ECECEC"
+            android:layout_toRightOf="@+id/doneBox"
+            android:layout_marginLeft="10dip"/>
+
         <TextView
             android:id="@+id/shoppingItemDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_toRightOf="@+id/shpverticalDivider"
             android:layout_toLeftOf="@id/shoppingItemAmount"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dip"
+            android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
             android:text="Makaronia misko"
             android:textColor="#000"
             android:textSize="18sp" />
+
+
 
         <TextView
             android:id="@+id/shoppingItemId"
@@ -85,6 +104,10 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dip"
             android:background="#00000000"/>
+
+
+
+
     </RelativeLayout>
 
 
