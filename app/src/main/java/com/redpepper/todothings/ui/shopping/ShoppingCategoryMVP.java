@@ -14,9 +14,9 @@ public interface ShoppingCategoryMVP {
 
         Maybe<Category> storeNewCategory(String name);
 
-        Maybe<Category> editCategory(String id, String name);
+        Maybe<Category> editCategory(Category category);
 
-        Maybe<Category> deleteCategory(String id);
+        Maybe<Category> deleteCategory(Category category);
 
         Maybe<Category> restoreCategory(Category category);
 
@@ -36,9 +36,9 @@ public interface ShoppingCategoryMVP {
 
         void downLoadCategories();
 
-        void deleteCategory(String id);
+        void deleteCategory(Category category);
 
-        void updateCategory(String id, int position, String name);
+        void updateCategory(Category category, int position);
 
         void restoreCategory(Category category);
 

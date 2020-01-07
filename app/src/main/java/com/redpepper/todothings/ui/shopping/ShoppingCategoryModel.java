@@ -22,13 +22,13 @@ class ShoppingCategoryModel implements ShoppingCategoryMVP.Model {
     }
 
     @Override
-    public Maybe<Category> editCategory(String id, String name) {
-        return this.firebaseRepository.updateCategory(id, name);
+    public Maybe<Category> editCategory(Category category) {
+        return this.firebaseRepository.updateCategory(category);
     }
 
     @Override
-    public Maybe<Category> deleteCategory(String id) {
-        return this.firebaseRepository.deleteCategory(id);
+    public Maybe<Category> deleteCategory(Category category) {
+        return this.firebaseRepository.deleteCategory(category);
     }
 
     @Override

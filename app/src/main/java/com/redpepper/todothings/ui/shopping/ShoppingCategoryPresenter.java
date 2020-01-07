@@ -64,9 +64,9 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
     }
 
     @Override
-    public void updateCategory(String id, int position, String name) {
+    public void updateCategory(Category category, int position) {
 
-        subscription.add(model.editCategory(id, name)
+        subscription.add(model.editCategory(category)
                 .subscribe(newCategory -> {
                             view.editItem(newCategory, position);
 
@@ -80,11 +80,11 @@ class ShoppingCategoryPresenter implements ShoppingCategoryMVP.Presenter {
     }
 
     @Override
-    public void deleteCategory(String id) {
+    public void deleteCategory(Category category) {
 
-        subscription.add(model.deleteCategory(id)
-                .subscribe(category -> {
-                            Log.d("RxFirebaseSample", "category: " + category);
+        subscription.add(model.deleteCategory(category)
+                .subscribe(category1 -> {
+                            Log.d("RxFirebaseSample", "category: " + category1);
                         }, throwable -> {
                             Log.e("RxFirebaseSample", throwable.toString());
                         }

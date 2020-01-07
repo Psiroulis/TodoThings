@@ -42,21 +42,21 @@ class FirebaseRepository implements ShoppingCategoryMVPRepository {
     }
 
     @Override
-    public Maybe<Category> updateCategory(String id, String name) {
+    public Maybe<Category> updateCategory(Category category) {
 
-        Category category = new Category(id, name.toUpperCase());
+        //Category category = new Category(category.getId(), name.toUpperCase());
 
-        databaseReference.child(id).setValue(category);
+        databaseReference.child(category.getId()).setValue(category);
 
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(id), Category.class);
+        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(category.getId()), Category.class);
     }
 
     @Override
-    public Maybe<Category> deleteCategory(String id) {
+    public Maybe<Category> deleteCategory(Category category) {
 
-        databaseReference.child(id).removeValue();
+        databaseReference.child(category.getId()).removeValue();
 
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(id), Category.class);
+        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(category.getId()), Category.class);
     }
 
     @Override

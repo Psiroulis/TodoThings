@@ -9,8 +9,8 @@ import io.reactivex.Maybe;
 interface ShoppingCategoryMVPRepository {
 
     Maybe<Category> createCategory(String name);
-    Maybe<Category> updateCategory(String id, String name);
-    Maybe<Category> deleteCategory(String id);
+    Maybe<Category> updateCategory(Category category);
+    Maybe<Category> deleteCategory(Category category);
     Maybe<Category> restoreCategory(Category category);
 
     Maybe<List<Category>> getAllCategories();

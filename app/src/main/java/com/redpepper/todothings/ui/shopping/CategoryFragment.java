@@ -78,7 +78,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
         FloatingActionButton fab = root.findViewById(R.id.categoryListfab);
 
-        fab.setOnClickListener(view -> showAlertDialog(CREATE_CATEGORY,null,-1));
+        fab.setOnClickListener(view -> showAlertDialog(CREATE_CATEGORY,-1));
 
         return root;
     }
@@ -140,7 +140,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
             final Category deletedItem = categoryList.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
-            presenter.deleteCategory(categoryList.get(position).getId());
+            presenter.deleteCategory(categoryList.get(position));
 
             mAdapter.deleteItem(viewHolder.getAdapterPosition());
 
@@ -163,7 +163,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
     }
 
 
-    private void showAlertDialog(int type, String id, int position){
+    private void showAlertDialog(int type, int position){
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -200,7 +200,11 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
 
            }else if(type == EDIT_CATEGORY){
 
-               presenter.updateCategory(id,position,nameEdt.getText().toString());
+               Category category = categoryList.get(position);
+
+               category.setName(nameEdt.getText().toString());
+
+               presenter.updateCategory(category,position);
 
            }
 
@@ -230,7 +234,7 @@ public class CategoryFragment extends Fragment implements ShoppingCategoryMVP.Vi
     @Override
     public void recyclerViewItemEditClicked(String id, int position) {
 
-        showAlertDialog(EDIT_CATEGORY,id,position);
+        showAlertDialog(EDIT_CATEGORY,position);
     }
 
     //    public interface OnListFragmentInteractionListener {
