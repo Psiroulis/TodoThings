@@ -2,7 +2,10 @@ package com.redpepper.todothings.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,25 +26,42 @@ public class SplashActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if(isNetworkAvailable()){
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        Intent intent = null;
+            FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser != null){
+            Intent intent;
 
-            intent = new Intent(this,MainActivity.class);
+            if(currentUser != null){
 
-        }else{
+                intent = new Intent(this,MainActivity.class);
 
-            intent = new Intent(this, LoginUserActivity.class);
+            }else{
+
+                intent = new Intent(this, LoginUserActivity.class);
+
+            }
+
+            startActivity(intent);
+
+            SplashActivity.this.finish();
 
         }
 
-        startActivity(intent);
+        if(!isNetworkAvailable()){
 
-        SplashActivity.this.finish();
+            //todo: Dialog for not available internet connection
 
+        }
+
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

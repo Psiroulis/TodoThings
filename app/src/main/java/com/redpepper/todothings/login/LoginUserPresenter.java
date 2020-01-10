@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -26,8 +27,28 @@ class LoginUserPresenter implements LoginUserMVP.Presenter {
 
 
     @Override
-    public void loginUser(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email,password)
+    public void loginUser(AuthCredential credential) {
+
+//        mAuth.getCurrentUser().linkWithCredential(credential)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if(task.isSuccessful()){
+//
+//                            view.goToMainActivity();
+//
+//                        }else{
+//
+//                            Log.d(TAG, "LoginUserWithEmail:failure", task.getException());
+//
+//                            view.goToRegisterUserActivity();
+//                        }
+//                    }
+//                });
+
+
+
+        mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -38,9 +59,11 @@ class LoginUserPresenter implements LoginUserMVP.Presenter {
 
                         }else{
 
-                            Log.d(TAG, "LoginUserWithEmail:failure", task.getException());
+                            Log.w("blepo", "signInWithCredential:failure", task.getException());
 
-                            view.goToRegisterUserActivity();
+                            //view.goToRegisterUserActivity();
+
+
                         }
                     }
                 });
