@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -76,7 +74,6 @@ public class ShoppingItemsFragment extends Fragment implements
 
         }
 
-
     }
 
     @Override
@@ -125,24 +122,7 @@ public class ShoppingItemsFragment extends Fragment implements
 
     }
 
-    @Override
-    public void addItemToListView(Item item) {
-
-        itemsListA.add(item);
-
-        mAdapter.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public void editItem(Item item, int posiiton) {
-
-        itemsListA.set(posiiton,item);
-
-        mAdapter.notifyDataSetChanged();
-
-    }
-//
+    //
 //    @Override
 //    public void editItemChecked(Item item, int posiiton) {
 //
@@ -182,7 +162,6 @@ public class ShoppingItemsFragment extends Fragment implements
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

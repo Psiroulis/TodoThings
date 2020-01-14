@@ -4,11 +4,12 @@ import com.redpepper.todothings.DataModels.Item;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
 interface ShoppingItemsMVPRepository {
 
-    Maybe<List<Item>> getAllCategoryItems(String categoryid);
+    //Maybe<List<Item>> getAllCategoryItems(String categoryid);
 
     Maybe<Item> createItem(String categoryId, Item item);
 
@@ -17,5 +18,7 @@ interface ShoppingItemsMVPRepository {
     Maybe<Item> deleteItem(String categoryId, Item item);
 
     Maybe<Item> restoreItem(String categoryId, Item item);
+
+    Flowable<List<Item>> getAllCategoryItems(String categoryid);
 
 }

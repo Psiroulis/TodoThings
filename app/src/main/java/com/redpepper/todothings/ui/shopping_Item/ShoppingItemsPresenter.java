@@ -31,13 +31,10 @@ class ShoppingItemsPresenter implements ShoppingItemsMVP.Presenter {
     public void createNewItem(String categoryId, Item item) {
         subscription.add(model.storeNewItem(categoryId, item)
                 .subscribe(
-                        itemA -> view.addItemToListView(itemA),
+                        itemA -> Log.e("RxFirebaseSample", "Item created with id: " + itemA.getId()),
                         throwable -> Log.e("RxFirebaseSample", throwable.toString())
                 ));
     }
-
-
-
 
     @Override
     public void downLoadItems(String categoryId) {
@@ -46,6 +43,8 @@ class ShoppingItemsPresenter implements ShoppingItemsMVP.Presenter {
 
         subscription.add(model.getAllItems(categoryId)
                 .subscribe(items -> {
+
+                    itemsList.clear();
 
                             for (Item item : items) {
                                 Log.d("blepo", "item id = " + item.getId());
@@ -65,7 +64,7 @@ class ShoppingItemsPresenter implements ShoppingItemsMVP.Presenter {
 
         subscription.add(model.deleteItem(categoryId,item)
         .subscribe(
-                itemA -> Log.d("RxFirebaseSample", "item: " + itemA),
+                itemA -> Log.e("RxFirebaseSample", "Item deleted with id: " + itemA.getId()),
                 throwable -> Log.e("RxFirebaseSample", throwable.toString())
         ));
     }
@@ -75,7 +74,7 @@ class ShoppingItemsPresenter implements ShoppingItemsMVP.Presenter {
 
         subscription.add(model.editItem(categoryId,item)
         .subscribe(
-                itemA -> view.editItem(itemA, position),
+                itemA -> Log.e("RxFirebaseSample", "Item with id: " + itemA.getId() +" updated at position " + position),
                 throwable -> Log.e("RxFirebaseSample", throwable.toString())
         ));
     }

@@ -11,6 +11,8 @@ import java.util.List;
 
 import durdinapps.rxfirebase2.DataSnapshotMapper;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
+
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
 class FirebaseRepository implements ShoppingItemsMVPRepository {
@@ -48,6 +50,7 @@ class FirebaseRepository implements ShoppingItemsMVPRepository {
         databaseReference.child(categoryId).child(item.getId()).setValue(item);
 
         return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(categoryId).child(item.getId()), Item.class);
+
     }
 
     @Override
@@ -68,9 +71,9 @@ class FirebaseRepository implements ShoppingItemsMVPRepository {
     }
 
     @Override
-    public Maybe<List<Item>> getAllCategoryItems(String categoryid) {
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference.child(categoryid), DataSnapshotMapper.listOf(Item.class));
+    public Flowable<List<Item>> getAllCategoryItems(String categoryid) {
 
+        return RxFirebaseDatabase.observeValueEvent(databaseReference.child(categoryid), DataSnapshotMapper.listOf(Item.class));
 
     }
 

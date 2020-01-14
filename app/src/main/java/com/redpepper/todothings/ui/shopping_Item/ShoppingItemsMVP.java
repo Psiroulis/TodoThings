@@ -4,6 +4,7 @@ import com.redpepper.todothings.DataModels.Item;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
 public interface ShoppingItemsMVP {
@@ -18,15 +19,13 @@ public interface ShoppingItemsMVP {
 
         Maybe<Item> restoreItem(String categoryId, Item item);
 
-        Maybe<List<Item>> getAllItems(String categoryId);
+        Flowable<List<Item>> getAllItems(String categoryId);
 
     }
 
     interface View {
 
         void fillListView(List<Item> itemsList);
-        void addItemToListView(Item item);
-        void editItem(Item item, int position);
 
     }
 

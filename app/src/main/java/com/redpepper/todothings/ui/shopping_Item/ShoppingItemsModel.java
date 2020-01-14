@@ -4,6 +4,7 @@ import com.redpepper.todothings.DataModels.Item;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
 class ShoppingItemsModel implements ShoppingItemsMVP.Model {
@@ -35,10 +36,9 @@ class ShoppingItemsModel implements ShoppingItemsMVP.Model {
     }
 
     @Override
-    public Maybe<List<Item>> getAllItems(String categoryId) {
+    public Flowable<List<Item>> getAllItems(String categoryId) {
 
         return this.firebaseRepository.getAllCategoryItems(categoryId);
     }
-
 
 }
